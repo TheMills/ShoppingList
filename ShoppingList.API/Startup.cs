@@ -27,6 +27,7 @@ namespace ShoppingList.API
         {
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
+            services.AddCors(); // for cross-browser access
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,7 +37,8 @@ namespace ShoppingList.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials()); // allowing any type of request from different source
             app.UseMvc();
         }
     }
