@@ -18,6 +18,7 @@ export class ListComponent implements OnInit {
   getLists() {
     this.http.get('http://localhost:5000/api/lists').subscribe(response => {
       console.log(response);
+      this.lists = response.json();
     });
   }
 }
