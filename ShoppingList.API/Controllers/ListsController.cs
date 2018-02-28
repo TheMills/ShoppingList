@@ -49,6 +49,28 @@ namespace ShoppingList.API.Controllers
                 return NotFound();
         }
 
+        // POST api/Lists
+        [HttpPost]
+        public async Task<IActionResult> CreateNewList([FromBody]string name)
+        {
+            if(name == null)
+                return BadRequest("Error: List must have a name specified");
+
+            var timeNow = DateTime.Now;
+            var newList = new ShopList(){ Name = name, TimeCreated=timeNow, TimeModified=timeNow };
+            _context.ShoppingLists.Add(newList);
+            _context.SaveChanges();
+            return Ok(_context.ShoppingLists.Include(x => x.ListItems).FirstOrDefaultAsync(i => i.TimeCreated == timeNow));
+        }
+
+
+ // Update shoppinglistname
+ 
+ // Update listitem status (aktiv/ikke aktiv, købt/ikke købt)
+ 
+ // Update listitem navn
+
+ // Update listitem vare
         
 
         // // POST api/values
