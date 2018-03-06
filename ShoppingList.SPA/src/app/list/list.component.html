@@ -1,2 +1,10 @@
-<p *ngFor="let list of lists">{{list.id}}: {{list.name}}
-</p>
+<h1>Aktive indkøbslister</h1>
+<ul class="lists">
+    <li *ngFor="let list of lists"
+        [class.selected]="list === selectedList"
+        (click)="onSelect(list)">
+        <span>{{list.id}} </span>{{list.name}}
+    </li>
+</ul>
+
+<app-list-detail [list]="selectedList"></app-list-detail>

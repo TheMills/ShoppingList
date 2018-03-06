@@ -1,0 +1,12 @@
+<div *ngIf="list">
+
+  <h2>{{list.name}} detaljer</h2>
+  <div><span>id: </span>{{list.id}}</div>
+  <div><span>name: </span>{{list.name}}</div>
+  <ul class="listItems">
+    <li *ngFor="let listItem of list.listItems">
+        <span>{{listItem.id}} </span>{{listItem.name}}
+    </li>
+  </ul>
+
+</div>

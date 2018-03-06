@@ -26,6 +26,10 @@ namespace ShoppingList.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+        //  services.AddDbContext<ApplicationDbContext>(options =>
+        //      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+        //      b => b.MigrationsAssembly("AngularASPNETCore2WebApiAuth")));
+        
             services.AddMvc();
             services.AddCors(); // for cross-browser access
         }
