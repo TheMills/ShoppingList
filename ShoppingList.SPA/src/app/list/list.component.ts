@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { List } from '../list';
 import { Item } from '../item';
 
@@ -9,25 +9,74 @@ import { Item } from '../item';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-  selectedList;
+  apiUrl = 'http://localhost:5000/api/';
   lists: List[];
+  selectedList;
 
   constructor(private http: Http) { }
 
   ngOnInit() {
-    this.getLists();
+    this.getSimpleListsFromAPI();
+
+//    this.getLists();
   }
 
-  getLists() {
-    // this.http.get('http://localhost:5000/api/lists').subscribe(response => {
-    //   console.log(response);
-    //   this.lists = response.json();
-    // });
-    this.http.get('http://localhost:5000/api/lists').subscribe(response => {
-      console.log(response);
+  getSimpleListsFromAPI() {
+    this.http.get(this.apiUrl + 'lists').subscribe(response => {
       this.lists = response.json() as List[];
-//      console.log(this.lists);
-      });
+    });
+  }
+
+  onSelect(list): void {
+    // const foundList = this.lists.find(i => i.id === list.id); // No need to search for the list, when it is selected from list
+    if (list.listItems === null) {
+      this.fillListItems(list);
+    }
+    this.selectedList = list;
+  }
+
+  fillListItems(selList: List): void {
+    let list: List;
+    const res = this.http.get(this.apiUrl + 'lists/' + selList.id).subscribe(resp => {
+      list = resp.json() as List;
+      selList.listItems = list.listItems;
+    });
+  }
+
+  onListUpdateClick(list): void {
+    list.name = list.name + '-o-';
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+  //  this.http.put(this.apiUrl + 'lists/' + list.id, JSON.stringify(list), {headers: headers}).subscribe(res => res.json());
+    this.http.put(this.apiUrl + 'lists/' + list.id, JSON.stringify(list), {headers: headers}).subscribe(resp => {
+      console.log(JSON.stringify(list));
+    });
+  }
+
+//   // Update existing Hero
+// private put(hero: Hero) {
+//   let headers = new Headers();
+//   headers.append('Content-Type', 'application/json');
+
+//   let url = `${this.heroesUrl}/${hero.id}`;
+
+//   return this.http
+//              .put(url, JSON.stringify(hero))
+//              .map(res => res.json());
+// }
+
+
+//   getLists() {
+//     // this.http.get('http://localhost:5000/api/lists').subscribe(response => {
+//     //   console.log(response);
+//     //   this.lists = response.json();
+//     // });
+//     this.http.get('http://localhost:5000/api/lists').subscribe(response => {
+//       console.log(response);
+//       this.lists = response.json() as List[];
+// //      console.log(this.lists);
+//       });
 
     // this.parseData(this.lists);
 
@@ -45,7 +94,7 @@ export class ListComponent implements OnInit {
     //   }
     // }
 
-  }
+  // }
 
   // parseData(jsonData: string) {
   //   // considering you get your data in json arrays
@@ -55,26 +104,4 @@ export class ListComponent implements OnInit {
   //        this.retrievedLists.push(data);
   //   }
   // }
-
-  onSelect(list): void {
-    // this.selectedList = list;
-    if (this.lists != null) {
-    }
-
-    const foundList = this.lists.find(i => i.id === list.id);
-    if (foundList.listItems == null) {
-      foundList.listItems = this.getListItems(foundList.id);
-    }
-    this.selectedList = foundList;
-  }
-
-  getListItems(id: number): Item[] {
-    let list: List;
-    this.http.get('http://localhost:5000/api/lists/' + id).subscribe(resp => {
-      list = resp.json() as List;
-     // console.log(resp.json() as List);
-    });
-    console.log(list.name + list.listItems);
-    return list.listItems;
-  }
 }

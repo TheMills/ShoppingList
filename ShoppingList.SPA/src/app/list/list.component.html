@@ -4,6 +4,7 @@
         [class.selected]="list === selectedList"
         (click)="onSelect(list)">
         <span>{{list.id}} </span>{{list.name}}
+        <a href="#" (click)="onListUpdateClick(list)">opdatér</a>
     </li>
 </ul>
 

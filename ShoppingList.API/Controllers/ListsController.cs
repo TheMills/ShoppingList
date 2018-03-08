@@ -63,6 +63,20 @@ namespace ShoppingList.API.Controllers
             return Ok(_context.ShoppingLists.Include(x => x.ListItems).FirstOrDefaultAsync(i => i.TimeCreated == timeNow));
         }
 
+        // PUT api/Lists/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateListDetails(int id, [FromBody]string list)
+        {
+            return Ok();
+        }
+
+        // PUT api/Lists/5/items/4
+        [HttpPut("{listId}/items/{itemId}")]
+        public async Task<IActionResult> UpdateListDetailsItem(int listId, int itemId, [FromBody]string value)
+        {
+            return Ok();
+        }
+
 
  // Update shoppinglistname
  

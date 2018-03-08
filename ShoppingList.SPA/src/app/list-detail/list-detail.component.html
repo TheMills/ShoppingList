@@ -6,6 +6,7 @@
   <ul class="listItems">
     <li *ngFor="let listItem of list.listItems">
         <span>{{listItem.id}} </span>{{listItem.name}}
+        <a href="#" (click)="onItemUpdateClick(list.id, listItem)">opdatér</a>
     </li>
   </ul>
 
