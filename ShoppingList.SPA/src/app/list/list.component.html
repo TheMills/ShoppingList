@@ -1,10 +1,16 @@
-<h1>Aktive indkøbslister</h1>
+<h2>Aktive indkøbslister</h2>
+<input #newList
+      (keyup.enter)="ListAdd(newList.value); newList.value=''">
+    <button (click)="ListAdd(newList.value); newList.value=''">Add</button>
+
 <ul class="lists">
     <li *ngFor="let list of lists"
         [class.selected]="list === selectedList"
         (click)="onSelect(list)">
         <span>{{list.id}} </span>{{list.name}}
-        <a href="#" (click)="onListUpdateClick(list)">opdatér</a>
+        <a href="#" (click)="ListUpdate(list)">opdatér</a>
+        &nbsp;|&nbsp;
+        <a href="#" (click)="ListDelete(list)">slet</a>
     </li>
 </ul>
 

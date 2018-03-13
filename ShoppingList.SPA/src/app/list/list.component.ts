@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Component, OnInit, } from '@angular/core';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { List } from '../list';
 import { Item } from '../item';
 
@@ -12,6 +12,8 @@ export class ListComponent implements OnInit {
   apiUrl = 'http://localhost:5000/api/';
   lists: List[];
   selectedList;
+
+  // newList: List;
 
   constructor(private http: Http) { }
 
@@ -28,7 +30,7 @@ export class ListComponent implements OnInit {
   }
 
   onSelect(list): void {
-    // const foundList = this.lists.find(i => i.id === list.id); // No need to search for the list, when it is selected from list
+    // const foundList = this.lists.find(i => i.id === list.id); // No need to search for the list, when it has been selected from list
     if (list.listItems === null) {
       this.fillListItems(list);
     }
@@ -43,7 +45,7 @@ export class ListComponent implements OnInit {
     });
   }
 
-  onListUpdateClick(list): void {
+  ListUpdate(list): void {
     list.name = list.name + '-o-';
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -53,6 +55,36 @@ export class ListComponent implements OnInit {
       console.log(JSON.stringify(list));
     });
   }
+
+  ListDelete(list): void {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.http.delete(this.apiUrl + 'lists/' + list.id, this.requestOptions()).subscribe(resp => {
+      this.lists.splice(this.lists.indexOf(list, 0), 1);
+    });
+  }
+
+  ListAdd(newListName: string) {
+    // console.log(newListName);
+    // console.log(JSON.stringify(newListName));
+    this.http.post(this.apiUrl + 'lists', JSON.stringify(newListName), this.requestOptions()).subscribe(resp => {
+      // console.log('List created: {0}', resp.json());
+      const list: List = resp.json() as List;
+      this.lists.push(list);
+      this.selectedList = list;
+      // console.log(list);
+      // this.lists.push(list);
+      }, error => {
+      console.log(error);
+    });
+  }
+
+  private requestOptions() {
+    const headers = new Headers({'Content-type': 'application/json'});
+    return new RequestOptions({headers: headers});
+}
+
+
 
 //   // Update existing Hero
 // private put(hero: Hero) {

@@ -3,11 +3,17 @@
   <h2>{{list.name}} detaljer</h2>
   <div><span>id: </span>{{list.id}}</div>
   <div><span>name: </span>{{list.name}}</div>
+
+  <input #newItem
+      (keyup.enter)="ItemAdd(newItem.value); newItem.value=''">
+    <button (click)="ItemAdd(newItem.value); newItem.value=''">Add</button>
+
   <ul class="listItems">
     <li *ngFor="let listItem of list.listItems">
         <span>{{listItem.id}} </span>{{listItem.name}}
-        <a href="#" (click)="onItemUpdateClick(list.id, listItem)">opdatér</a>
+        <a href="#" (click)="ItemUpdate(list.id, listItem)">opdatér</a>
+        &nbsp;|&nbsp;
+        <a href="#" (click)="ItemDelete(list.id, listItem)">slet</a>
     </li>
   </ul>
-
 </div>

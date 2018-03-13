@@ -13,5 +13,6 @@ export class List {
         this.name = text;
         this.timeCreated = timeCreated;
         this.timeModified = timeModified;
+        this.listItems = [];
     }
 }
